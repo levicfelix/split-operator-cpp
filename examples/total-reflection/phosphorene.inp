@@ -1,0 +1,27 @@
+# Core simulation
+dt = 0.7
+Nsteps = 400
+dx = 7.0
+dy = 7.0
+Lx = 3000.0
+Ly = 3000.0
+snapshots_step = 1
+init_time = 0
+
+# Grains
+alpha1_deg = 90.0
+alpha2_deg = 0.0
+
+# Material (effective masses in units of m0)
+material = Monolayer Phosphorene
+mx_over_m0 = 0.846
+my_over_m0 = 0.166
+
+# Wave packet
+d = 100.0
+phi1_deg = 30.0
+E = 300.0
+V0 = 0.0
+x0 = -400.0
+y0 = 200.0
+

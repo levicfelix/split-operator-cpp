@@ -1,0 +1,122 @@
+Split-Operator C++
+=================
+
+Author: Levi Felix  
+Period: 2017–2018  
+Location: Fortaleza, Brazil  
+
+Context:
+This code was developed and used in the author’s master’s dissertation:
+
+Wave packet propagation in phosphorene grain boundaries
+http://repositorio.ufc.br/handle/riufc/33439
+(Master’s dissertation, written in Portuguese)
+
+---------------------------------------------------------------------
+
+General Description
+-------------------
+
+This program computes the time evolution of wave packets using the
+split-operator method. The numerical approach follows the methodology
+described in:
+
+Communications in Computational Physics 17 (3), 850–866.
+
+The code was extended to treat polycrystalline two-dimensional materials
+within the effective-mass model, with a particular focus on scattering
+problems. While originally designed for phosphorene grain boundaries,
+the implementation is general and can be adapted to simpler systems
+involving external potentials.
+
+An example of a step potential is included.
+
+Scope and Limitations
+---------------------
+
+The current implementation is intended for:
+- Time-dependent wave-packet propagation
+- Scattering problems in two-dimensional systems
+
+The following topics are not addressed:
+- Bound-state problems
+- Imaginary-time evolution for obtaining eigenstates and eigenvalues
+
+Extending the code to handle these cases would require additional
+modifications.
+
+---------------------------------------------------------------------
+
+Installation
+------------
+
+To build the code, go to the src/ directory and run:
+
+  make
+
+This will generate the executable:
+
+  split_operator
+
+---------------------------------------------------------------------
+
+Running the Code
+----------------
+
+If the executable is in your PATH, run the simulation as:
+
+  split_operator inputfile.inp
+
+An example input file is provided in the examples/ directory.
+
+The program writes binary snapshot data that can be post-processed for
+visualization and analysis.
+
+---------------------------------------------------------------------
+
+Post-processing and Visualization
+---------------------------------
+
+The tools/ directory contains a Python wrapper for plotting wave-packet
+trajectories from the generated binary snapshot files. This wrapper can
+be used to produce individual frames and animations of the wave-packet
+evolution.
+
+---------------------------------------------------------------------
+
+Planned / Ongoing Development
+-----------------------------
+
+Additional analysis and visualization features are planned or under
+development, including:
+
+- Composite figures showing multiple snapshots of the wave packet in a
+  single image
+- Expectation values of the wave-packet center-of-mass position
+- Expectation values of the wave-packet center-of-mass velocity
+- Reflection and transmission probabilities
+
+These features are not yet fully integrated into the current toolchain.
+
+---------------------------------------------------------------------
+
+Intended Use
+------------
+
+This code was developed as a research tool for studying quantum transport
+and scattering phenomena in two-dimensional materials. While it was
+tested and validated in the context of a master’s dissertation, further
+validation and adaptation may be required for other physical systems or
+numerical applications.
+
+---------------------------------------------------------------------
+
+Citation
+--------
+
+If you use or adapt this code in academic work, please cite:
+
+- The master’s dissertation listed above (written in Portuguese)
+- The split-operator methodology reference in:
+  Communications in Computational Physics 17 (3), 850–866.
+

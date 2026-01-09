@@ -1,0 +1,16 @@
+# build artifacts
+build/
+*.o
+*.a
+*.so
+*.dylib
+*.exe
+split_operator
+
+# editor / OS
+.DS_Store
+.vscode/
+.idea/
+
+# misc
+*.log

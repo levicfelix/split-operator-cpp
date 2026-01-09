@@ -1,0 +1,199 @@
+Wave-packet trajectory plotting wrapper
+======================================
+
+This repository provides a lightweight command-line wrapper called
+`plot_trajectory` to generate PNG frames (and optionally an MP4 video)
+from binary wave-packet trajectory snapshots.
+
+The wrapper is generated locally (no pip install, no packages) and is
+designed to work directly with simulation output folders of the form:
+
+  <name>_snapshots/
+      wave_header.bin
+      wave_0.bin
+      wave_1.bin
+      wave_2.bin
+      ...
+
+
+What this tool does
+-------------------
+
+Given a base name `filename`, the command:
+
+  plot_trajectory filename
+
+will:
+
+  1) Read grid and spacing information from:
+       filename_snapshots/wave_header.bin
+
+  2) Read probability density snapshots from:
+       filename_snapshots/wave_<k>.bin
+
+  3) Generate PNG frames:
+       filename_frames/frame_00000.png
+       filename_frames/frame_00001.png
+       ...
+
+  4) Use fixed color scaling, discrete color bands, and a publication-style
+     plot by default.
+
+Optionally, it can also assemble the frames into an MP4 movie using FFmpeg.
+
+
+File layout
+-----------
+
+Only three files are required:
+
+  setup.py
+  src/
+   ├─ frames.py     # frame generation logic
+   └─ ffmpeg.py     # MP4 creation helper
+
+Running setup.py generates:
+
+  bin/
+   └─ plot_trajectory   # executable wrapper
+
+
+Installation
+------------
+
+1) Generate the wrapper
+
+From the project root:
+
+  python setup.py
+
+This creates:
+
+  bin/plot_trajectory
+
+and marks it as executable.
+
+
+2) Add bin/ to your PATH
+
+For the current shell session:
+
+  export PATH="$PWD/bin:$PATH"
+
+To make this permanent, add the line above to your ~/.bashrc or ~/.zshrc.
+
+Verify installation:
+
+  which plot_trajectory
+
+
+Usage
+-----
+
+1) Basic usage (frames only)
+
+  plot_trajectory filename
+
+This will:
+  - Read data from: filename_snapshots/
+  - Write frames to: filename_frames/
+  - Not create a movie
+
+
+2) Generate frames and MP4 video
+
+  plot_trajectory filename --MAKE_MP4 True
+
+This additionally creates:
+
+  filename.mp4
+
+
+3) Control video frame rate
+
+  plot_trajectory filename --MAKE_MP4 True --FPS 15
+
+(Default FPS is 10.)
+
+
+Expected input format
+---------------------
+
+Header file:
+
+  filename_snapshots/wave_header.bin
+
+Binary layout (little-endian):
+  int32   Nx
+  int32   Ny
+  float32 dx
+  float32 dy
+
+
+Snapshot files:
+
+  filename_snapshots/wave_<k>.bin
+
+Each file contains:
+  - Nx * Ny values
+  - float32
+  - stored in C order (i outer loop, j inner loop)
+  - interpreted as |psi(x,y)|^2
+
+
+Output
+------
+
+Frames:
+
+  filename_frames/
+   ├─ frame_00000.png
+   ├─ frame_00001.png
+   ├─ ...
+   └─ frame_<.....>.png
+
+Video (optional):
+
+  filename.mp4
+
+FFmpeg is required only if you use --MAKE_MP4 True.
+Check availability with:
+
+  ffmpeg -version
+
+
+Plot defaults
+-------------
+
+The plotting style is fixed in src/frames.py and matches the original script:
+
+  - Discrete color bands (jet, 9 levels)
+  - Fixed color scale (based on first frame)
+  - Percentile-based scaling (0.5–99.5%)
+  - Optional hard cap on maximum intensity
+  - No contour lines
+  - External colorbar
+  - Grain boundary drawn at x = 0
+
+You can edit these defaults directly in src/frames.py if needed.
+
+
+Dependencies
+------------
+
+  - Python >= 3.8
+  - NumPy
+  - Matplotlib
+  - FFmpeg (only if --MAKE_MP4 True is used)
+
+
+Typical workflow
+----------------
+
+  # run simulation -> produces run1_snapshots/
+  python setup.py
+  export PATH="$PWD/bin:$PATH"
+
+  plot_trajectory run1
+  plot_trajectory run1 --MAKE_MP4 True
+
